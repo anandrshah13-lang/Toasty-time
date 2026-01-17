@@ -127,8 +127,14 @@ class ToastyTime {
         // Confetti container
         this.confettiContainer = document.getElementById('confetti-container');
 
-        // Audio element
+        // Audio elements
         this.backgroundMusic = document.getElementById('background-music');
+        this.danceMusic1 = document.getElementById('dance-music-1');
+        this.danceMusic2 = document.getElementById('dance-music-2');
+        this.danceMusic3 = document.getElementById('dance-music-3');
+        this.danceMusicTracks = [this.danceMusic1, this.danceMusic2, this.danceMusic3];
+        this.currentDanceTrack = 0;
+        this.isDancing = false;
     }
 
     attachEventListeners() {
@@ -196,6 +202,19 @@ class ToastyTime {
         this.updateHomeScreen();
         this.updateLevelDisplay();
         this.showScreen('home-screen');
+
+        // Stop dance music and resume background music
+        this.isDancing = false;
+        this.danceMusicTracks.forEach(track => {
+            if (track && !track.paused) {
+                track.pause();
+                track.currentTime = 0;
+            }
+        });
+
+        if (this.settings.soundOn && this.backgroundMusic) {
+            this.startBackgroundMusic();
+        }
     }
 
     // Settings
@@ -563,11 +582,55 @@ class ToastyTime {
     startDanceMode() {
         this.danceMessage.textContent = this.format(this.randomFrom(this.config.danceMessages));
         this.showScreen('dance-mode-screen');
+
+        // Stop background music and start dance music
+        if (this.backgroundMusic && !this.backgroundMusic.paused) {
+            this.backgroundMusic.pause();
+        }
+        this.playDanceMusic();
+    }
+
+    playDanceMusic() {
+        if (!this.settings.soundOn) return;
+
+        // Stop all dance tracks first
+        this.danceMusicTracks.forEach(track => {
+            if (track && !track.paused) {
+                track.pause();
+                track.currentTime = 0;
+            }
+        });
+
+        // Play current dance track
+        const track = this.danceMusicTracks[this.currentDanceTrack];
+        if (track) {
+            track.volume = 0.4;
+            track.play().catch(e => console.log('Dance music playback prevented:', e));
+        }
+    }
+
+    switchDanceTrack() {
+        this.currentDanceTrack = (this.currentDanceTrack + 1) % this.danceMusicTracks.length;
+        this.playDanceMusic();
     }
 
     triggerDance() {
         const messages = this.config.danceMessages;
         this.danceMessage.textContent = this.format(this.randomFrom(messages));
+
+        // Toggle dancing animation
+        this.isDancing = !this.isDancing;
+        const toastyDance = document.querySelector('#dance-toasty .toasty-svg');
+        const danceContainer = document.getElementById('dance-toasty');
+
+        if (this.isDancing) {
+            toastyDance.classList.add('dancing');
+            // Switch to next song when dancing starts
+            this.switchDanceTrack();
+        } else {
+            toastyDance.classList.remove('dancing');
+            danceContainer.classList.remove('spinning');
+        }
 
         this.createConfetti();
 
