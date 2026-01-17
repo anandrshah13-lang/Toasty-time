@@ -1,0 +1,647 @@
+/* Toasty Time - Garden Theme Styles */
+
+:root {
+    /* Garden color palette */
+    --bg-primary: #F5F1E8;
+    --bg-secondary: #E8F4E5;
+    --accent-green: #7CAA6D;
+    --accent-warm: #D89B5E;
+    --text-primary: #2D3B2D;
+    --text-secondary: #5A6B5A;
+    --toasty-brown: #C87533;
+    --shadow: rgba(45, 59, 45, 0.1);
+    --glow: rgba(212, 137, 74, 0.3);
+    --success: #6B9E5F;
+    --warmth: #E8A87C;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    touch-action: manipulation;
+}
+
+/* Decorative background elements (subtle garden feel) */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(124, 170, 109, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(216, 155, 94, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Screen management */
+.screen {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* Typography */
+h1, h2 {
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.screen-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.subheader {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.instruction {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+/* Toasty character */
+.toasty-container {
+    position: relative;
+    margin: 2rem 0;
+}
+
+.toasty-svg {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 12px var(--shadow));
+}
+
+.toasty-large {
+    width: 180px;
+    height: 180px;
+}
+
+/* Toasty animations */
+.toasty-svg {
+    animation: toasty-idle 3s ease-in-out infinite;
+}
+
+@keyframes toasty-idle {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.02); }
+}
+
+.toasty-tail {
+    animation: tail-wag 0.6s ease-in-out infinite;
+    transform-origin: 130px 120px;
+}
+
+@keyframes tail-wag {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}
+
+.tail-wag {
+    animation: tail-wag-fast 0.3s ease-in-out infinite;
+}
+
+@keyframes tail-wag-fast {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+}
+
+/* Dancing Toasty */
+.dancing {
+    animation: toasty-dance 0.5s ease-in-out infinite;
+}
+
+@keyframes toasty-dance {
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+    25% { transform: translateY(-15px) rotate(-5deg) scale(1.05); }
+    75% { transform: translateY(-15px) rotate(5deg) scale(1.05); }
+}
+
+/* Hug glow effect */
+.hug-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.hugging .hug-glow {
+    opacity: 1;
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+}
+
+/* Buttons */
+.btn {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 56px;
+    min-width: 200px;
+    box-shadow: 0 4px 12px var(--shadow);
+    font-family: inherit;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: var(--accent-green);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #6B9E5F;
+    box-shadow: 0 6px 16px var(--shadow);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--text-primary);
+    border: 2px solid var(--accent-green);
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+.btn-secondary:hover {
+    background: var(--bg-secondary);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.btn-ghost:hover {
+    color: var(--text-primary);
+}
+
+/* Level Badge */
+.level-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px var(--shadow);
+    margin: 1.5rem 0;
+    width: 100%;
+    max-width: 400px;
+    border: 2px solid var(--accent-warm);
+}
+
+.level-icon {
+    font-size: 2.5rem;
+    animation: level-pulse 2s ease-in-out infinite;
+}
+
+@keyframes level-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.level-info {
+    flex: 1;
+}
+
+.level-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    margin-bottom: 0.5rem;
+}
+
+.level-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+
+.level-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-warm));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+.level-stats {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* Level up animation */
+.level-up-animation {
+    animation: level-up 0.8s ease-out;
+}
+
+@keyframes level-up {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); box-shadow: 0 8px 24px var(--glow); }
+    100% { transform: scale(1); }
+}
+
+/* Mode buttons grid */
+.mode-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Settings bar */
+.settings-bar {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.icon-btn {
+    background: white;
+    border: 2px solid var(--accent-green);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.icon-btn:hover {
+    background: var(--bg-secondary);
+    transform: scale(1.05);
+}
+
+.icon-btn:active {
+    transform: scale(0.95);
+}
+
+/* Hug interaction area */
+.hug-area {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    margin: 2rem auto;
+}
+
+.progress-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: rgba(124, 170, 109, 0.1);
+    stroke-width: 8;
+}
+
+.progress-ring-progress {
+    fill: none;
+    stroke: var(--accent-green);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 817;
+    stroke-dashoffset: 817;
+    transition: stroke-dashoffset 0.1s linear;
+}
+
+/* Breathing animation for progress ring */
+.breathing .progress-ring-progress {
+    animation: breathe-ring 6s ease-in-out infinite;
+}
+
+@keyframes breathe-ring {
+    0%, 100% { stroke-width: 8; }
+    50% { stroke-width: 12; }
+}
+
+.toasty-hold-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.toasty-hold-area.holding {
+    animation: hold-pulse 3s ease-in-out infinite;
+}
+
+@keyframes hold-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.05); }
+}
+
+/* Timer display */
+.timer-display {
+    margin-top: 1rem;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.timer {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    margin-bottom: 1rem;
+}
+
+.hold-prompt {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    min-height: 4em;
+    padding: 0 1.5rem;
+    animation: fade-in 0.5s ease;
+    font-weight: 500;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Warmth display (Hug Mode) */
+.warmth-display {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.warmth-label {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.warmth-counter {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--warmth);
+    margin-bottom: 0.5rem;
+}
+
+.warmth-reaction {
+    font-size: 1.5rem;
+    min-height: 2rem;
+    animation: bounce-in 0.4s ease;
+}
+
+@keyframes bounce-in {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Completion screens */
+.completion-content {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.completion-message {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    margin: 2rem 0 1rem;
+    color: var(--accent-green);
+}
+
+.anand-note {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.warmth-summary {
+    font-size: 1.25rem;
+    color: var(--warmth);
+    margin: 1.5rem 0;
+}
+
+.warmth-earned strong {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Dance mode */
+.dance-area {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.toasty-dance-container {
+    margin: 2rem 0;
+}
+
+.dance-message {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-top: 2rem;
+    animation: fade-in 0.5s ease;
+}
+
+/* Confetti */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: confetti-fall 2s ease-out forwards;
+}
+
+.confetti:nth-child(2n) { background: var(--accent-warm); }
+.confetti:nth-child(3n) { background: var(--warmth); }
+.confetti:nth-child(4n) { background: var(--success); }
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Sparkle effect */
+.sparkle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    animation: sparkle-fade 1s ease-out forwards;
+}
+
+@keyframes sparkle-fade {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+/* Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+    .toasty-svg,
+    .toasty-tail,
+    .dancing,
+    .hold-pulse,
+    .pulse-glow,
+    .breathing,
+    .confetti,
+    .sparkle {
+        animation: none !important;
+    }
+
+    .btn:active {
+        transform: none;
+    }
+}
+
+body.reduce-motion .toasty-svg,
+body.reduce-motion .toasty-tail,
+body.reduce-motion .dancing,
+body.reduce-motion .hold-pulse,
+body.reduce-motion .pulse-glow,
+body.reduce-motion .breathing,
+body.reduce-motion .confetti,
+body.reduce-motion .sparkle {
+    animation: none !important;
+}
+
+body.reduce-motion .btn:active {
+    transform: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 400px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .btn {
+        min-width: 160px;
+        font-size: 1rem;
+        padding: 0.875rem 1.5rem;
+    }
+
+    .mode-buttons {
+        gap: 0.5rem;
+    }
+
+    .btn-secondary {
+        min-width: 100px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Prevent text selection during interactions */
+.toasty-hold-area,
+.btn {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Loading state (optional) */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Toasty Time</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen active">
+        <div class="container">
+            <h1 id="home-header">Hi Seema</h1>
+            <p id="home-subheader" class="subheader">Toasty is here for you.</p>
+
+            <div class="toasty-container">
+                <svg id="toasty-home" class="toasty-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Toasty the poodle -->
+                    <!-- Body -->
+                    <ellipse cx="100" cy="120" rx="45" ry="50" fill="#C87533" class="toasty-body"/>
+
+                    <!-- Head -->
+                    <circle cx="100" cy="70" r="35" fill="#C87533" class="toasty-head"/>
+
+                    <!-- Ears (floppy) -->
+                    <ellipse cx="75" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-left"/>
+                    <ellipse cx="125" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-right"/>
+
+                    <!-- Curly fur texture (circles) -->
+                    <circle cx="85" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                    <circle cx="115" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                    <circle cx="95" cy="115" r="10" fill="#D4894A" opacity="0.5"/>
+                    <circle cx="105" cy="125" r="9" fill="#D4894A" opacity="0.5"/>
+                    <circle cx="80" cy="130" r="8" fill="#D4894A" opacity="0.5"/>
+                    <circle cx="120" cy="135" r="8" fill="#D4894A" opacity="0.5"/>
+
+                    <!-- Snout -->
+                    <ellipse cx="100" cy="80" rx="18" ry="15" fill="#A65929"/>
+
+                    <!-- Nose -->
+                    <ellipse cx="100" cy="78" rx="6" ry="5" fill="#2D1810"/>
+
+                    <!-- Eyes -->
+                    <circle cx="90" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                    <circle cx="110" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                    <circle cx="91" cy="67" r="1.5" fill="white"/>
+                    <circle cx="111" cy="67" r="1.5" fill="white"/>
+
+                    <!-- Mouth (happy) -->
+                    <path d="M 95 85 Q 100 88 105 85" stroke="#2D1810" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+                    <!-- Legs -->
+                    <rect x="75" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                    <rect x="113" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+
+                    <!-- Tail (wagging) -->
+                    <g id="toasty-tail" class="toasty-tail">
+                        <ellipse cx="140" cy="115" rx="8" ry="20" fill="#B85D2B" transform="rotate(-30 140 115)"/>
+                        <circle cx="145" cy="105" r="6" fill="#D4894A" opacity="0.6"/>
+                    </g>
+
+                    <!-- Paws -->
+                    <ellipse cx="81" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                    <ellipse cx="119" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                </svg>
+
+                <!-- Glow effect container -->
+                <div id="hug-glow" class="hug-glow"></div>
+            </div>
+
+            <!-- Level Display -->
+            <div class="level-badge">
+                <div class="level-icon">🏆</div>
+                <div class="level-info">
+                    <div class="level-title" id="level-title">Beginner Hugger</div>
+                    <div class="level-progress-bar">
+                        <div class="level-progress-fill" id="level-progress-fill"></div>
+                    </div>
+                    <div class="level-stats" id="level-stats">0/3 hugs to next level</div>
+                </div>
+            </div>
+
+            <button id="quick-hug-btn" class="btn btn-primary">I need a hug</button>
+
+            <div class="mode-buttons">
+                <button id="hug-mode-btn" class="btn btn-secondary">Hug</button>
+                <button id="dance-mode-btn" class="btn btn-secondary">Dance</button>
+            </div>
+
+            <div class="settings-bar">
+                <button id="sound-toggle" class="icon-btn" aria-label="Toggle sound">
+                    <span class="sound-icon">🔇</span>
+                </button>
+                <button id="motion-toggle" class="icon-btn" aria-label="Toggle reduce motion">
+                    <span class="motion-icon">✨</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Hug Screen (60 seconds) -->
+    <div id="quick-hug-screen" class="screen">
+        <div class="container">
+            <h2 class="screen-title">Toasty Hug Reset</h2>
+            <p class="instruction">Press and hold to hug Toasty for 60 seconds.</p>
+
+            <div class="hug-area">
+                <svg class="progress-ring" width="280" height="280">
+                    <circle class="progress-ring-bg" cx="140" cy="140" r="130" />
+                    <circle id="quick-progress-ring" class="progress-ring-progress" cx="140" cy="140" r="130" />
+                </svg>
+
+                <div id="quick-toasty-hold" class="toasty-hold-area">
+                    <svg class="toasty-svg toasty-large" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Same Toasty SVG -->
+                        <ellipse cx="100" cy="120" rx="45" ry="50" fill="#C87533" class="toasty-body"/>
+                        <circle cx="100" cy="70" r="35" fill="#C87533" class="toasty-head"/>
+                        <ellipse cx="75" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-left"/>
+                        <ellipse cx="125" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-right"/>
+                        <circle cx="85" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="115" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="95" cy="115" r="10" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="105" cy="125" r="9" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="80" cy="130" r="8" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="120" cy="135" r="8" fill="#D4894A" opacity="0.5"/>
+                        <ellipse cx="100" cy="80" rx="18" ry="15" fill="#A65929"/>
+                        <ellipse cx="100" cy="78" rx="6" ry="5" fill="#2D1810"/>
+                        <circle cx="90" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="110" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="91" cy="67" r="1.5" fill="white"/>
+                        <circle cx="111" cy="67" r="1.5" fill="white"/>
+                        <path d="M 95 85 Q 100 88 105 85" stroke="#2D1810" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <rect x="75" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <rect x="113" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <g class="toasty-tail">
+                            <ellipse cx="140" cy="115" rx="8" ry="20" fill="#B85D2B" transform="rotate(-30 140 115)"/>
+                            <circle cx="145" cy="105" r="6" fill="#D4894A" opacity="0.6"/>
+                        </g>
+                        <ellipse cx="81" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                        <ellipse cx="119" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="timer-display">
+                <div id="quick-timer" class="timer">1:00</div>
+                <div id="quick-prompt" class="hold-prompt">Breathe in… Toasty's got you, Seema.</div>
+            </div>
+
+            <button id="quick-back-btn" class="btn btn-ghost">Back home</button>
+        </div>
+    </div>
+
+    <!-- Quick Hug Complete Screen -->
+    <div id="quick-complete-screen" class="screen">
+        <div class="container">
+            <div class="completion-content">
+                <div class="toasty-container">
+                    <svg class="toasty-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="100" cy="120" rx="45" ry="50" fill="#C87533" class="toasty-body"/>
+                        <circle cx="100" cy="70" r="35" fill="#C87533" class="toasty-head"/>
+                        <ellipse cx="75" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-left"/>
+                        <ellipse cx="125" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-right"/>
+                        <circle cx="85" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="115" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="95" cy="115" r="10" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="105" cy="125" r="9" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="80" cy="130" r="8" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="120" cy="135" r="8" fill="#D4894A" opacity="0.5"/>
+                        <ellipse cx="100" cy="80" rx="18" ry="15" fill="#A65929"/>
+                        <ellipse cx="100" cy="78" rx="6" ry="5" fill="#2D1810"/>
+                        <circle cx="90" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="110" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="91" cy="67" r="1.5" fill="white"/>
+                        <circle cx="111" cy="67" r="1.5" fill="white"/>
+                        <path d="M 95 85 Q 100 88 105 85" stroke="#2D1810" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <rect x="75" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <rect x="113" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <g class="toasty-tail tail-wag">
+                            <ellipse cx="140" cy="115" rx="8" ry="20" fill="#B85D2B" transform="rotate(-30 140 115)"/>
+                            <circle cx="145" cy="105" r="6" fill="#D4894A" opacity="0.6"/>
+                        </g>
+                        <ellipse cx="81" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                        <ellipse cx="119" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                    </svg>
+                </div>
+
+                <h2 id="quick-complete-message" class="completion-message">Seema, you did it. Toasty is proud of you.</h2>
+                <p id="quick-anand-note" class="anand-note">— Love you. I'm with you. — Anand</p>
+
+                <button id="send-hug-back-btn" class="btn btn-primary">Send a hug back</button>
+                <button id="quick-complete-home-btn" class="btn btn-ghost">Back home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hug Mode Screen (2-3 minutes) -->
+    <div id="hug-mode-screen" class="screen">
+        <div class="container">
+            <h2 class="screen-title">Hug Toasty</h2>
+            <p class="instruction">Press and hold as long as you want. Stop anytime.</p>
+
+            <div class="hug-area">
+                <svg class="progress-ring" width="280" height="280">
+                    <circle class="progress-ring-bg" cx="140" cy="140" r="130" />
+                    <circle id="hug-progress-ring" class="progress-ring-progress" cx="140" cy="140" r="130" />
+                </svg>
+
+                <div id="hug-toasty-hold" class="toasty-hold-area">
+                    <svg class="toasty-svg toasty-large" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="100" cy="120" rx="45" ry="50" fill="#C87533" class="toasty-body"/>
+                        <circle cx="100" cy="70" r="35" fill="#C87533" class="toasty-head"/>
+                        <ellipse cx="75" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-left"/>
+                        <ellipse cx="125" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-right"/>
+                        <circle cx="85" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="115" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="95" cy="115" r="10" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="105" cy="125" r="9" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="80" cy="130" r="8" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="120" cy="135" r="8" fill="#D4894A" opacity="0.5"/>
+                        <ellipse cx="100" cy="80" rx="18" ry="15" fill="#A65929"/>
+                        <ellipse cx="100" cy="78" rx="6" ry="5" fill="#2D1810"/>
+                        <circle cx="90" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="110" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="91" cy="67" r="1.5" fill="white"/>
+                        <circle cx="111" cy="67" r="1.5" fill="white"/>
+                        <path d="M 95 85 Q 100 88 105 85" stroke="#2D1810" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <rect x="75" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <rect x="113" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <g class="toasty-tail">
+                            <ellipse cx="140" cy="115" rx="8" ry="20" fill="#B85D2B" transform="rotate(-30 140 115)"/>
+                            <circle cx="145" cy="105" r="6" fill="#D4894A" opacity="0.6"/>
+                        </g>
+                        <ellipse cx="81" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                        <ellipse cx="119" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                    </svg>
+                </div>
+
+                <div class="warmth-display">
+                    <div class="warmth-label">Warmth</div>
+                    <div id="warmth-counter" class="warmth-counter">0</div>
+                    <div id="warmth-reaction" class="warmth-reaction"></div>
+                </div>
+            </div>
+
+            <button id="hug-back-btn" class="btn btn-ghost">Back home</button>
+        </div>
+    </div>
+
+    <!-- Hug Mode Complete Screen -->
+    <div id="hug-complete-screen" class="screen">
+        <div class="container">
+            <div class="completion-content">
+                <div class="toasty-container">
+                    <svg class="toasty-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="100" cy="120" rx="45" ry="50" fill="#C87533" class="toasty-body"/>
+                        <circle cx="100" cy="70" r="35" fill="#C87533" class="toasty-head"/>
+                        <ellipse cx="75" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-left"/>
+                        <ellipse cx="125" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-right"/>
+                        <circle cx="85" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="115" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="95" cy="115" r="10" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="105" cy="125" r="9" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="80" cy="130" r="8" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="120" cy="135" r="8" fill="#D4894A" opacity="0.5"/>
+                        <ellipse cx="100" cy="80" rx="18" ry="15" fill="#A65929"/>
+                        <ellipse cx="100" cy="78" rx="6" ry="5" fill="#2D1810"/>
+                        <circle cx="90" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="110" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="91" cy="67" r="1.5" fill="white"/>
+                        <circle cx="111" cy="67" r="1.5" fill="white"/>
+                        <path d="M 95 85 Q 100 88 105 85" stroke="#2D1810" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <rect x="75" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <rect x="113" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <g class="toasty-tail tail-wag">
+                            <ellipse cx="140" cy="115" rx="8" ry="20" fill="#B85D2B" transform="rotate(-30 140 115)"/>
+                            <circle cx="145" cy="105" r="6" fill="#D4894A" opacity="0.6"/>
+                        </g>
+                        <ellipse cx="81" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                        <ellipse cx="119" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                    </svg>
+                </div>
+
+                <div class="warmth-summary">
+                    <span class="warmth-earned">Warmth earned: <strong id="final-warmth">0</strong></span>
+                </div>
+
+                <h2 id="hug-complete-message" class="completion-message">One minute lighter. Toasty hug delivered.</h2>
+                <p id="hug-anand-note" class="anand-note">— You're doing amazing. — Anand</p>
+
+                <button id="hug-complete-home-btn" class="btn btn-primary">Back home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dance Mode Screen -->
+    <div id="dance-mode-screen" class="screen">
+        <div class="container">
+            <h2 class="screen-title">Dance with Toasty</h2>
+            <p class="instruction">Tap to make Toasty dance!</p>
+
+            <div class="dance-area">
+                <div id="dance-toasty" class="toasty-dance-container">
+                    <svg class="toasty-svg toasty-large dancing" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="100" cy="120" rx="45" ry="50" fill="#C87533" class="toasty-body"/>
+                        <circle cx="100" cy="70" r="35" fill="#C87533" class="toasty-head"/>
+                        <ellipse cx="75" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-left"/>
+                        <ellipse cx="125" cy="65" rx="15" ry="25" fill="#B85D2B" class="toasty-ear-right"/>
+                        <circle cx="85" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="115" cy="65" r="8" fill="#D4894A" opacity="0.6"/>
+                        <circle cx="95" cy="115" r="10" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="105" cy="125" r="9" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="80" cy="130" r="8" fill="#D4894A" opacity="0.5"/>
+                        <circle cx="120" cy="135" r="8" fill="#D4894A" opacity="0.5"/>
+                        <ellipse cx="100" cy="80" rx="18" ry="15" fill="#A65929"/>
+                        <ellipse cx="100" cy="78" rx="6" ry="5" fill="#2D1810"/>
+                        <circle cx="90" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="110" cy="68" r="4" fill="#2D1810" class="toasty-eye"/>
+                        <circle cx="91" cy="67" r="1.5" fill="white"/>
+                        <circle cx="111" cy="67" r="1.5" fill="white"/>
+                        <path d="M 95 85 Q 100 88 105 85" stroke="#2D1810" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <rect x="75" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <rect x="113" y="160" width="12" height="30" rx="6" fill="#B85D2B" class="toasty-leg"/>
+                        <g class="toasty-tail tail-wag">
+                            <ellipse cx="140" cy="115" rx="8" ry="20" fill="#B85D2B" transform="rotate(-30 140 115)"/>
+                            <circle cx="145" cy="105" r="6" fill="#D4894A" opacity="0.6"/>
+                        </g>
+                        <ellipse cx="81" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                        <ellipse cx="119" cy="188" rx="8" ry="5" fill="#8B4513"/>
+                    </svg>
+                </div>
+
+                <p id="dance-message" class="dance-message">Ready to boogie, Seema?</p>
+            </div>
+
+            <button id="dance-btn" class="btn btn-primary">Dance!</button>
+            <button id="dance-back-btn" class="btn btn-ghost">Back home</button>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div id="confetti-container" class="confetti-container"></div>
+
+    <!-- Audio Elements -->
+    <audio id="background-music" loop>
+        <!-- Placeholder - you'll need to add your own audio file -->
+        <!-- <source src="assets/calm-ambient.mp3" type="audio/mpeg"> -->
+    </audio>
+    <audio id="level-up-sound">
+        <!-- <source src="assets/level-up.mp3" type="audio/mpeg"> -->
+    </audio>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
