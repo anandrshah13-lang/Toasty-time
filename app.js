@@ -62,6 +62,7 @@ class ToastyTime {
         this.updateHomeScreen();
         this.updateLevelDisplay();
         this.showScreen('home-screen');
+        this.initBackgroundMusic();
     }
 
     cacheElements() {
@@ -125,6 +126,9 @@ class ToastyTime {
 
         // Confetti container
         this.confettiContainer = document.getElementById('confetti-container');
+
+        // Audio element
+        this.backgroundMusic = document.getElementById('background-music');
     }
 
     attachEventListeners() {
@@ -233,58 +237,34 @@ class ToastyTime {
         this.applySettings();
     }
 
-    // Simple ambient background music using Web Audio API
+    // Initialize background music
+    initBackgroundMusic() {
+        if (this.backgroundMusic) {
+            this.backgroundMusic.volume = 0.3; // Set volume to 30%
+
+            // Try to play music when user interacts with the page
+            document.addEventListener('click', () => {
+                if (this.settings.soundOn && this.backgroundMusic.paused) {
+                    this.backgroundMusic.play().catch(e => {
+                        console.log('Audio playback prevented by browser:', e);
+                    });
+                }
+            }, { once: true });
+        }
+    }
+
+    // Start background music
     startBackgroundMusic() {
-        if (!this.audioContext) {
-            try {
-                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            } catch (e) {
-                console.log('Web Audio API not supported');
-                return;
-            }
+        if (this.backgroundMusic && this.backgroundMusic.paused) {
+            this.backgroundMusic.play().catch(e => {
+                console.log('Audio playback prevented by browser:', e);
+            });
         }
-
-        // Resume audio context if suspended (browser autoplay policy)
-        if (this.audioContext.state === 'suspended') {
-            this.audioContext.resume();
-        }
-
-        if (this.backgroundOscillator) return; // Already playing
-
-        // Create a gentle ambient tone (very low volume)
-        const osc1 = this.audioContext.createOscillator();
-        const osc2 = this.audioContext.createOscillator();
-        const gainNode = this.audioContext.createGain();
-
-        // Two overlapping sine waves for a peaceful sound
-        osc1.type = 'sine';
-        osc2.type = 'sine';
-        osc1.frequency.setValueAtTime(220, this.audioContext.currentTime); // A3
-        osc2.frequency.setValueAtTime(330, this.audioContext.currentTime); // E4
-
-        // Very low volume
-        gainNode.gain.setValueAtTime(0.02, this.audioContext.currentTime);
-
-        // Connect oscillators through gain to output
-        osc1.connect(gainNode);
-        osc2.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);
-
-        osc1.start();
-        osc2.start();
-
-        this.backgroundOscillator = { osc1, osc2, gainNode };
     }
 
     stopBackgroundMusic() {
-        if (this.backgroundOscillator) {
-            try {
-                this.backgroundOscillator.osc1.stop();
-                this.backgroundOscillator.osc2.stop();
-            } catch (e) {
-                // Already stopped
-            }
-            this.backgroundOscillator = null;
+        if (this.backgroundMusic && !this.backgroundMusic.paused) {
+            this.backgroundMusic.pause();
         }
     }
 
